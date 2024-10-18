@@ -1,0 +1,6 @@
+connexion[uvicorn,swagger-ui,flask]
+flask
+sqlalchemy
+python-dotenv
+psycopg2-binary
+pytest
