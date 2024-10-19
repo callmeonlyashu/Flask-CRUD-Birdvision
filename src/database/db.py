@@ -4,7 +4,9 @@ from sqlalchemy.orm import sessionmaker
 from dotenv import load_dotenv
 import os
 from sqlalchemy import URL
+import logging
 
+log = logging.getLogger(__name__)
 
 load_dotenv()
 
@@ -23,6 +25,7 @@ url_object = URL.create(
     database=DB_NAME,
 )
 
+log.info("creating engine")
 engine = create_engine(url_object)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
@@ -31,4 +34,5 @@ Base = declarative_base()
 
 
 def create_tables():
+    log.info("creating tables")
     Base.metadata.create_all(bind=engine)
