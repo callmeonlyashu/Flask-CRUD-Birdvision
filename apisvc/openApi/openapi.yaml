@@ -8,6 +8,27 @@ servers:
     description: Local server
 
 paths:
+  /auth/login:
+    post:
+      summary: User login to generate Bearer Token
+      operationId: apisvc.controllers.product_controller.auth_login
+      responses:
+        '200':
+          description: Token generated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '401':
+          description: Unauthorized
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      tags:
+        - Auth
   /products:
     get:
       summary: Retrieve a list of all products
@@ -27,6 +48,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+      security:
+        - bearerAuth: []
     post:
       summary: Create a new product
       operationId: apisvc.controllers.product_controller.createProduct
@@ -50,6 +73,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+      security:
+        - bearerAuth: []
 
   /products/{id}:
     get:
@@ -76,6 +101,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+      security:
+        - bearerAuth: []
     put:
       summary: Update an existing product by ID
       operationId: apisvc.controllers.product_controller.updateProduct
@@ -107,6 +134,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+      security:
+        - bearerAuth: []
     delete:
       summary: Delete a product by ID
       operationId: apisvc.controllers.product_controller.deleteProduct
@@ -127,9 +156,33 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+      security:
+        - bearerAuth: []
+
 
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      x-bearerInfoFunc: src.auth_handlers.token_manager.bdv_bearer_auth
   schemas:
+    LoginRequest:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      required:
+        - username
+        - password
+    LoginResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
     Product:
       type: object
       properties:

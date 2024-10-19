@@ -18,8 +18,14 @@ DB_PASS=XX
 DB_HOST=XX
 DB_PORT=XXX
 DB_NAME=XXXX
+JWT_SECRET_KEY=XXXXXX
 ```
 
-the file to run is `main.py`
+The file to start the server is `wsgi.py`
 
-test cases can be run directly by executing `test_product.py` file
+Test cases can be run directly by executing `test_product.py` file
+
+To get the JWT token, hit http://localhost:8000/auth/login by passing the "admin:password" 
+in base64 encode string in the header. 
+
+The JWT token received from the `auth/login` must be copied in headers of other endpoints as a Bearer token

@@ -1,6 +1,30 @@
 from apisvc.models.product import Product
 from src.database.db import SessionLocal
 from flask import jsonify
+from flask import request, jsonify
+from flask_jwt_extended import create_access_token
+from src.auth_handlers.token_manager import decode_auth_header
+
+
+users = {
+    "admin": "password",
+}
+
+
+def auth_login():
+    auth_header = request.headers.get('Authorization')
+    if auth_header and auth_header.startswith("Basic "):
+        try:
+            username, password = decode_auth_header(auth_header)
+        except Exception:
+            return jsonify({"msg": "Invalid authentication header"}), 401
+
+        # Verify credentials
+        if username in users and users[username] == password:
+            access_token = create_access_token(identity=username)
+            return jsonify(access_token=access_token), 200
+        return jsonify({"msg": "Unauthorized"}), 401
+    return jsonify({"msg": "Missing Authorization Header"}), 401
 
 
 def get_db():
