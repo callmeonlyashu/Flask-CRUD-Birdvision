@@ -1,5 +1,3 @@
-# logging_config.py
-
 import logging
 import logging.config
 
@@ -35,5 +33,4 @@ def setup_logging():
         },
     }
 
-    # Apply the logging configuration
     logging.config.dictConfig(logging_config)

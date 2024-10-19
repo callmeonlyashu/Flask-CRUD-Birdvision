@@ -4,9 +4,10 @@ import connexion
 from src.database.db import Base, engine
 from flask_jwt_extended import JWTManager
 import logging
+from src.logging.logging_config import setup_logging
+
 
 log = logging.getLogger(__name__)
-from src.logging.logging_config import setup_logging
 
 # Initialize logging
 setup_logging()
